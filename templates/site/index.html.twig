@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Розділи бібліотеки{% endblock %}
+
+{% block body %}
+    <h1>Бібліотека технічної літератури</h1>
+    <p class="lead">Оберіть тематичний розділ або скористайтеся програмним інтерфейсом <code>/api/books</code>.</p>
+
+    <ul class="cards">
+        {% for topic in topics %}
+            <li>
+                <a class="card" href="{{ path('site_topic', {slug: topic.slug}) }}">
+                    <strong>{{ topic.name }}</strong>
+                    <span>Книг у розділі: {{ topic.books_count }}</span>
+                </a>
+            </li>
+        {% else %}
+            <li class="empty">У бібліотеці поки немає жодного розділу.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ topic.name }}{% endblock %}
+
+{% block body %}
+    <a class="back" href="{{ path('site_home') }}">← усі розділи</a>
+    <h1>{{ topic.name }}</h1>
+
+    <div class="filters">
+        <nav class="tabs">
+            <a href="{{ path('site_topic', {slug: topic.slug, q: q}) }}"
+               class="{{ status is null ? 'active' }}">Усі</a>
+            {% for s in statuses %}
+                <a href="{{ path('site_topic', {slug: topic.slug, status: s.value, q: q}) }}"
+                   class="{{ s == status ? 'active' }}">{{ s.label }}</a>
+            {% endfor %}
+        </nav>
+
+        <form class="search-form" method="get" action="{{ path('site_topic', {slug: topic.slug}) }}">
+            {% if status %}
+                <input type="hidden" name="status" value="{{ status.value }}">
+            {% endif %}
+            <input type="text" name="q" value="{{ q }}" placeholder="Пошук за назвою, автором чи ISBN...">
+            <button type="submit">Знайти</button>
+        </form>
+    </div>
+
+    <p class="lead">Знайдено книг: {{ books|length }}</p>
+
+    <table class="items">
+        <thead>
+            <tr>
+                <th>ISBN</th>
+                <th>Назва</th>
+                <th>Автор</th>
+                <th>Рік</th>
+                <th>Статус</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+                <tr>
+                    <td><code>{{ book.isbn }}</code></td>
+                    <td><a href="{{ path('site_book_show', {id: book.id}) }}">{{ book.title }}</a></td>
+                    <td>{{ book.author }}</td>
+                    <td>{{ book.publishedYear }}</td>
+                    <td><span class="tag {{ book.status.cssClass }}">{{ book.status.label }}</span></td>
+                </tr>
+            {% else %}
+                <tr><td colspan="5" class="empty">За заданими фільтрами книг не знайдено.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

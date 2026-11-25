@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block body %}
+    <a class="back" href="{{ path('site_topic', {slug: book.topic.slug}) }}">
+        ← повернутися до розділу «{{ book.topic.name }}»
+    </a>
+
+    <div class="detail-card">
+        <h1>{{ book.title }}</h1>
+        <span class="tag {{ book.status.cssClass }}">{{ book.status.label }}</span>
+
+        <dl class="detail-grid">
+            <dt>Автор:</dt>
+            <dd>{{ book.author }}</dd>
+
+            <dt>ISBN:</dt>
+            <dd><code>{{ book.isbn }}</code></dd>
+
+            <dt>Розділ:</dt>
+            <dd>{{ book.topic.name }}</dd>
+
+            <dt>Рік видання:</dt>
+            <dd>{{ book.publishedYear }}</dd>
+
+            <dt>Анотація:</dt>
+            <dd>{{ book.summary ?: 'Анотація відсутня.' }}</dd>
+        </dl>
+    </div>
+{% endblock %}
